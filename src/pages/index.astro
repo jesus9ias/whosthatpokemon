@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Pokemon from '../components/Pokemon';
+---
+
+<Layout title="Who's that pokemon?">
+	<main>
+		<h1>Whos's that pokemon?</h1>
+		<Pokemon client:only />
+	</main>
+</Layout>
+
+<style>
+</style>
