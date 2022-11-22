@@ -1,20 +1,26 @@
 import axios from 'axios';
-import { signal, computed } from "@preact/signals";
+import { signal, computed } from '@preact/signals';
 
 const pokemonsData = signal([]);
-const pokemonImageUrl = signal('');
 const correctOption = signal(0);
-const revealed = signal(false);
+const revealed = signal(true);
 const selectedCorrectOption = signal(false);
 const endedTurn = signal(false);
 const countTurns = signal(1);
-const countSuccess = signal(1);
+const countSuccess = signal(0);
+
+const maxPokemons = 905;
+const maxOptions = 4;
 
 const hiddenImageStyle = computed(() => revealed.value ? '' : '-webkit-filter: brightness(0%);');
 
 const correctName = computed(() => pokemonsData.value.find((pokemon) => pokemon.id === correctOption.value).name);
 
-const getPokemonData = async (id) => {
+const pokemonImageUrl = computed(() => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${correctOption.value}.png`);
+
+const canGoNext = computed(() => endedTurn.value);
+
+const getPokemonData = async (id: number) => {
   const response = await axios({
     method: 'get',
     url: `https://pokeapi.co/api/v2/pokemon/${id}`
@@ -22,7 +28,7 @@ const getPokemonData = async (id) => {
   return response;
 };
 
-const getAll = async (pokemonOptions) => {
+const getAll = async (pokemonOptions: number[]) => {
   Promise.all([
     getPokemonData(pokemonOptions[0]),
     getPokemonData(pokemonOptions[1]),
@@ -39,24 +45,21 @@ const getAll = async (pokemonOptions) => {
 const getOptions = () => {
   const pokemonOptions = [];
 
-  while (pokemonOptions.length < 4) {
-    const option = Math.floor(Math.random() * 905 + 1);
+  while (pokemonOptions.length < maxOptions) {
+    const option = Math.floor(Math.random() * maxPokemons + 1);
     if (pokemonOptions.indexOf(option) === -1) {
       pokemonOptions.push(option);
     }
   }
 
-  const random = Math.floor(Math.random() * 4);
+  const random = Math.floor(Math.random() * maxOptions);
   correctOption.value = pokemonOptions[random];
-
-  pokemonImageUrl.value = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${correctOption.value}.png`;
 
   return pokemonOptions;
 }
 
 const reset = () => {
   pokemonsData.value = [];
-  pokemonImageUrl.value = '';
   correctOption.value = 0;
   revealed.value = false;
   selectedCorrectOption.value = false;
@@ -66,7 +69,7 @@ const reset = () => {
 const start = () => {
   reset();
   countTurns.value = 1;
-  countSuccess.value = 1;
+  countSuccess.value = 0;
   getAll(getOptions());
 }
 
@@ -77,7 +80,7 @@ const next = () => {
 }
 
 
-const review = (id) => {
+const review = (id: number) => {
   if (id === correctOption.value) {
     selectedCorrectOption.value = true;
     countSuccess.value++;
@@ -102,7 +105,7 @@ export default function Pokemon() {
         ))
       }
       <button onClick={() => start()}>Start</button>
-      <button onClick={() => next()}>Next</button>
+      <button disabled={!canGoNext.value} onClick={() => next()}>Next</button>
       {
         endedTurn.value ? <h2>{correctName.value}</h2> : null
       }
