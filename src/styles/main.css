@@ -1,0 +1,24 @@
+
+:root {
+  --white: #ffffff;
+  --dark: #002e2a;
+  --gray: #DEDEDE;
+  --red: #dc0a2d;
+  --green: #52ae5f;
+}
+
+html {
+  background: var(--red);
+  font-family: system-ui, sans-serif;
+}
+
+@font-face {
+  font-family: pokemon-solid;
+  src: url('pokemon-solid.ttf');
+}
+
+.layout__title {
+  color: yellow;
+  text-shadow: 4px 4px 0px #0b43e9;
+  font-family: pokemon-solid;
+}
