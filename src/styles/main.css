@@ -5,6 +5,9 @@
   --gray: #DEDEDE;
   --red: #dc0a2d;
   --green: #52ae5f;
+  --red-hard: #ab0621;
+  --blue: #27aafc;
+  --yellow: #fff383;
 }
 
 html {
@@ -17,8 +20,12 @@ html {
   src: url('/pokemon-solid.ttf');
 }
 
-.layout__title {
+.poke-font {
   color: yellow;
   text-shadow: 4px 4px 0px #0b43e9;
   font-family: pokemon-solid;
+}
+
+.layout__title {
+  font-size: 32px;
 }

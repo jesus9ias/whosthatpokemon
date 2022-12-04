@@ -3,6 +3,7 @@ import { signal, computed } from '@preact/signals';
 
 const pokemonsData = signal([]);
 const correctOption = signal(0);
+const selectedOption = signal(0);
 const selectedCorrectOption = signal(false);
 const gameStarted = signal(false);
 const endedTurn = signal(false);
@@ -19,6 +20,20 @@ const correctName = computed(() => pokemonsData.value.find((pokemon) => pokemon.
 const pokemonImageUrl = computed(() => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${correctOption.value}.png`);
 
 const startText = computed(() => gameStarted.value ? 'RESTART' : 'START');
+
+const pokemonOptionClass = (id: number) => {
+  let className = 'button button--gray';
+  if (endedTurn.value && id !== selectedOption.value) {
+    className += ' button--disabled';
+  }
+  if (endedTurn.value && id === selectedOption.value && id === correctOption.value) {
+    className += ' button--success';
+  }
+  if (endedTurn.value && id === selectedOption.value && id !== correctOption.value) {
+    className += ' button--error';
+  }
+  return className;
+};
 
 const getPokemonData = async (id: number) => {
   const response = await axios({
@@ -59,9 +74,9 @@ const getOptions = () => {
 }
 
 const reset = () => {
-  gameStarted.value = false;
   pokemonsData.value = [];
   correctOption.value = 0;
+  selectedOption.value = 0;
   selectedCorrectOption.value = false;
   endedTurn.value = false;
 };
@@ -82,12 +97,15 @@ const next = () => {
 
 
 const review = (id: number) => {
+  selectedOption.value = id;
   if (id === correctOption.value) {
     selectedCorrectOption.value = true;
     countSuccess.value++;
   }
   endedTurn.value = true;
 }
+
+start();
 
 export default function Pokemon() {
 	return (
@@ -98,29 +116,32 @@ export default function Pokemon() {
         style={`background-image: url("${pokemonImageUrl.value}");${hiddenImageStyle.value}`}
       >
       </div>
-      <p>{countSuccess.value}/{countTurns.value}</p>
       {
-        pokemonsData.value.map((pokemon) => (
-          <button class="button button-gray" disabled={endedTurn.value} onClick={() => review(pokemon.id)}>{pokemon.name}</button>
-        ))
+        endedTurn.value ? <h2 class="text-4xl poke-font">{correctName.value}</h2> : null
       }
-      <div>
+      <div class="py-4">
         {
-          endedTurn.value ? <button class="button button-dark" onClick={() => next()}>NEXT</button> : null
+          pokemonsData.value.map((pokemon) => (
+            <button class={pokemonOptionClass(pokemon.id)} disabled={endedTurn.value} onClick={() => review(pokemon.id)}>{pokemon.name}</button>
+          ))
         }
       </div>
-      <div>
-        <button class="button button-dark" onClick={() => start()}>{startText}</button>
+      
+      <div class="flex justify-between w-full max-w-sm m-auto">
+        {
+          !gameStarted.value || endedTurn.value ? <button class="button button--warn text-2xl" onClick={() => start()}>{startText}</button> : null
+        }
+        {
+          endedTurn.value ? <button disabled={!endedTurn.value} class="button button--info text-2xl" onClick={() => next()}>NEXT</button> : null
+        }
       </div>
-      {
-        endedTurn.value ? <h2>{correctName.value}</h2> : null
-      }
       {
         selectedCorrectOption.value ? <h2>Correct!!!</h2> : null
       }
       {
         !selectedCorrectOption.value && endedTurn.value ? <h2>failed :(</h2> : null
       }
+      <p>{countSuccess.value}/{countTurns.value}</p>
     </div>
 		</>
 	);
