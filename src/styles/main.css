@@ -14,7 +14,7 @@ html {
 
 @font-face {
   font-family: pokemon-solid;
-  src: url('pokemon-solid.ttf');
+  src: url('/pokemon-solid.ttf');
 }
 
 .layout__title {

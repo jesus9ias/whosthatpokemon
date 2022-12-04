@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { signal, computed } from '@preact/signals';
-import './pokemon.css';
 
 const pokemonsData = signal([]);
 const correctOption = signal(0);
