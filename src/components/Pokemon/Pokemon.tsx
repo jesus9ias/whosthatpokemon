@@ -90,9 +90,11 @@ const start = () => {
 }
 
 const next = () => {
-  reset();
-  countTurns.value++;
-  getAll(getOptions());
+  if (endedTurn.value) {
+    reset();
+    countTurns.value++;
+    getAll(getOptions());
+  }
 }
 
 
@@ -111,11 +113,14 @@ export default function Pokemon() {
 	return (
 		<>
     <div class="pokemon text-center">
-      <div
-        class="pokemon__image m-auto"
-        style={`background-image: url("${pokemonImageUrl.value}");${hiddenImageStyle.value}`}
-      >
+      <div class="pokemon__flash">
+        <div
+          class="pokemon__image m-auto"
+          style={`background-image: url("${pokemonImageUrl.value}");${hiddenImageStyle.value}`}
+        >
+        </div>
       </div>
+      
       {
         endedTurn.value ? <h2 class="text-4xl poke-font">{correctName.value}</h2> : null
       }
@@ -126,22 +131,29 @@ export default function Pokemon() {
           ))
         }
       </div>
-      
-      <div class="flex justify-between w-full max-w-sm m-auto">
-        {
-          !gameStarted.value || endedTurn.value ? <button class="button button--warn text-2xl" onClick={() => start()}>{startText}</button> : null
-        }
-        {
-          endedTurn.value ? <button disabled={!endedTurn.value} class="button button--info text-2xl" onClick={() => next()}>NEXT</button> : null
-        }
-      </div>
       {
         selectedCorrectOption.value ? <h2>Correct!!!</h2> : null
       }
       {
         !selectedCorrectOption.value && endedTurn.value ? <h2>failed :(</h2> : null
       }
-      <p>{countSuccess.value}/{countTurns.value}</p>
+      <div class="flex text-white">
+        <p class="m-2 text-lg flex-1 text-left">{countSuccess.value}/{countTurns.value}</p>
+        <span
+          class="material-symbols-outlined mx-2 cursor-pointer leading-[unset]"
+          title="Restart"
+          onClick={() => start()}
+        >
+          restart_alt
+        </span>
+        <span
+          class={`material-symbols-outlined mx-2 cursor-pointer leading-[unset] ${!endedTurn.value ? 'opacity-40' : ''}`}
+          title="Next"
+          onClick={() => next()}
+        >
+          arrow_forward
+        </span>
+      </div>
     </div>
 		</>
 	);

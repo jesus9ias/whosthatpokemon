@@ -11,7 +11,7 @@
 }
 
 html {
-  background: var(--red);
+  background: var(--gray);
   font-family: system-ui, sans-serif;
 }
 
@@ -26,6 +26,28 @@ html {
   font-family: pokemon-solid;
 }
 
+html,
+body,
+.layout {
+  @apply h-full;
+}
+
+.layout {
+  @apply sm:w-96 sm:my-5 mx-auto sm:rounded-xl sm:h-auto;
+  background: linear-gradient(235deg, rgba(232,38,65,1) 6%, rgba(241,69,65,1) 16%, rgba(232,38,65,1) 29%, rgba(232,38,65,1) 53%, rgba(250,81,100,1) 63%, rgba(232,38,65,1) 73%, rgba(250,81,100,1) 83%, rgba(232,38,65,1) 89%);
+  box-shadow: 1px 2px 11px 0px rgba(0,0,0,0.75);
+}
+
+@media (max-width: 640px) {
+  .layout {
+    box-shadow: none;
+  }
+}
+
 .layout__title {
   font-size: 32px;
+}
+
+.text-white {
+  color: var(--white);
 }
