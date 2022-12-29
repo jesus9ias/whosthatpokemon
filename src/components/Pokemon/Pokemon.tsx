@@ -138,9 +138,9 @@ export default function Pokemon() {
         !selectedCorrectOption.value && endedTurn.value ? <h2>failed :(</h2> : null
       }
       <div class="flex text-white">
-        <p class="m-2 text-lg flex-1 text-left">{countSuccess.value}/{countTurns.value}</p>
+        <p class="my-1 mx-2 text-lg text-left">{countSuccess.value}/{countTurns.value}</p>
         <span
-          class="material-symbols-outlined mx-2 cursor-pointer leading-[unset]"
+          class="material-symbols-outlined flex-1 text-left mx-2 cursor-pointer leading-[unset]"
           title="Restart"
           onClick={() => start()}
         >
