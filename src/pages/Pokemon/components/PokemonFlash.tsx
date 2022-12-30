@@ -1,11 +1,18 @@
 import { computed } from '@preact/signals';
+import { Pokemon } from '../interfaces/Pokemon';
 
-export default function PokemonFlash(props) {
-  const hiddenImageStyle = computed(() => props.countTurns.value === 0 || props.endedTurn.value ? '' : '-webkit-filter: brightness(0%);');
+export default function PokemonFlash({
+  countTurns,
+  endedTurn,
+  pokemonsData,
+  correctOption,
+  selectedCorrectOption
+}) {
+  const hiddenImageStyle = computed(() => countTurns.value === 0 || endedTurn.value ? '' : '-webkit-filter: brightness(0%);');
 
-  const correctName = computed(() => props.pokemonsData.value.find((pokemon) => pokemon.id === props.correctOption.value).name);
+  const correctName = computed(() => pokemonsData.value.find((pokemon: Pokemon) => pokemon.id === correctOption.value).name);
 
-  const pokemonImageUrl = computed(() => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${props.correctOption.value}.png`);
+  const pokemonImageUrl = computed(() => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${correctOption.value}.png`);
 
   return (
     <>
@@ -16,15 +23,15 @@ export default function PokemonFlash(props) {
         >
         </div>
         {
-          props.selectedCorrectOption.value ? <span class="material-symbols-outlined response-icon response-icon--success">done</span> : null
+          selectedCorrectOption.value ? <span class="material-symbols-outlined response-icon response-icon--success">done</span> : null
         }
         {
-          !props.selectedCorrectOption.value && props.endedTurn.value ? <span class="material-symbols-outlined response-icon response-icon--error">close</span> : null
+          !selectedCorrectOption.value && endedTurn.value ? <span class="material-symbols-outlined response-icon response-icon--error">close</span> : null
         }
       </div>
 
       {
-        props.endedTurn.value ? <h2 class="text-4xl poke-font">{correctName.value}</h2> : null
+        endedTurn.value ? <h2 class="text-4xl poke-font">{correctName.value}</h2> : null
       }
     </>
   );

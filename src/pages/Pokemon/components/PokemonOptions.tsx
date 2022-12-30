@@ -14,7 +14,14 @@ const pokemonOptionClass = (id: number, endedTurn: boolean, selectedOption: numb
   return className;
 };
 
-export default function PokemonOptions({ pokemonsData, isLoadingOptions, endedTurn, selectedOption, correctOption, review }) {
+export default function PokemonOptions({
+  pokemonsData,
+  isLoadingOptions,
+  endedTurn,
+  selectedOption,
+  correctOption,
+  review
+}) {
   return (
     <>
       {
