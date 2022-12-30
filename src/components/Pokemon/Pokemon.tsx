@@ -130,7 +130,7 @@ export default function Pokemon() {
           ))
         }
       </div>
-      <div class="flex-1">
+      <div>
       {
         selectedCorrectOption.value ? <h2>Correct!!!</h2> : null
       }
@@ -138,7 +138,7 @@ export default function Pokemon() {
         !selectedCorrectOption.value && endedTurn.value ? <h2>failed :(</h2> : null
       }
       </div>
-      <div class="flex text-white">
+      <div class="flex flex-1 items-end text-white">
         <p class="my-1 mx-2 text-lg text-left">{countSuccess.value}/{countTurns.value}</p>
         <span
           class="material-symbols-outlined flex-1 text-left mx-2 cursor-pointer leading-[unset]"
