@@ -2,11 +2,13 @@
 import Pokemon from './Pokemon';
 ---
 
-<div>
-  <Pokemon client:only />
-</div>
+<Pokemon client:only />
 
 <style is:global>
+
+.pokemon {
+  @apply flex flex-col flex-1;
+}
 
 .pokemon__flash {
   @apply py-8 mt-4;
