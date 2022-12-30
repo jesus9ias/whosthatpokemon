@@ -13,11 +13,13 @@ const gameStarted = signal(false);
 const endedTurn = signal(false);
 const countTurns = signal(0);
 const countSuccess = signal(0);
+const isLoadingOptions = signal(false);
 
 const maxPokemons = 905;
 const maxOptions = 4;
 
 const getAll = async (pokemonOptions: number[]) => {
+  isLoadingOptions.value = true;
   Promise.all([
     getPokemonData(pokemonOptions[0]),
     getPokemonData(pokemonOptions[1]),
@@ -28,6 +30,7 @@ const getAll = async (pokemonOptions: number[]) => {
       const { id, name }: Pokemon = response.data;
       return { id, name };
     });
+    isLoadingOptions.value = false;
   });
 }
 
@@ -97,6 +100,7 @@ export default function Pokemon() {
         selectedOption={selectedOption}
         pokemonsData={pokemonsData}
         correctOption={correctOption}
+        isLoadingOptions={isLoadingOptions}
         review={review}
       />
       <PokemonMenu

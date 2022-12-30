@@ -14,20 +14,32 @@ const pokemonOptionClass = (id: number, endedTurn: boolean, selectedOption: numb
   return className;
 };
 
-export default function PokemonOptions(props) {
+export default function PokemonOptions({ pokemonsData, isLoadingOptions, endedTurn, selectedOption, correctOption, review }) {
   return (
-    <div class="py-4">
+    <>
       {
-        props.pokemonsData.value.map((pokemon: Pokemon) => (
-          <button
-            class={pokemonOptionClass(pokemon.id, props.endedTurn.value, props.selectedOption.value, props.correctOption.value)}
-            disabled={props.endedTurn.value}
-            onClick={() => props.review(pokemon.id)}
-          >
-            {pokemon.name}
-          </button>
-        ))
+        isLoadingOptions.value ?
+          <div class="py-4 flex justify-center">
+            <div class="button button--gray button--skeleton"></div>
+            <div class="button button--gray button--skeleton"></div>
+            <div class="button button--gray button--skeleton"></div>
+            <div class="button button--gray button--skeleton"></div>
+          </div>
+        :
+          <div class="py-4">
+            {
+              pokemonsData.value.map((pokemon: Pokemon) => (
+                <button
+                  class={pokemonOptionClass(pokemon.id, endedTurn.value, selectedOption.value, correctOption.value)}
+                  disabled={endedTurn.value}
+                  onClick={() => review(pokemon.id)}
+                >
+                  {pokemon.name}
+                </button>
+              ))
+            }
+          </div>
       }
-    </div>
+    </>
   );
 }
