@@ -11,7 +11,7 @@ import Pokemon from './Pokemon';
 }
 
 .pokemon__flash {
-  @apply py-8 mt-4;
+  @apply py-8 mt-4 relative;
   background: url('/whosthatpokemon-flash.png') no-repeat;
   background-position: center;
   background-size: cover;
@@ -59,6 +59,19 @@ import Pokemon from './Pokemon';
 
 .button--error {
   color: var(--white);
+  background: var(--red-hard);
+}
+
+.response-icon {
+  @apply absolute bottom-8 right-8 p-3 text-6xl font-bold rounded-full;
+  color: var(--white);
+}
+
+.response-icon--success {
+  background: var(--green);
+}
+
+.response-icon--error {
   background: var(--red-hard);
 }
 
