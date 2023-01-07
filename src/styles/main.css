@@ -11,7 +11,8 @@
 }
 
 html {
-  background: var(--gray);
+  background-color: var(--gray);
+  background-image: url('/pokeball_background.png');
   font-family: system-ui, sans-serif;
 }
 
